@@ -61,7 +61,7 @@ const SearchForm = () => {
         <div className={style.result_container}>
           {!searchValue.current.value
             ? ''
-            : array.map((pair, index) => {
+            : arrayWithDifference.map((pair, index) => {
                 return (
                   <>
                     <div>
