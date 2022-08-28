@@ -4,7 +4,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: 'production',
   output: {
-    publicPath: 'http://localhost:3020/',
+    publicPath: 'https://currencies-spa.netlify.app',
 
     path: path.resolve(__dirname, './dist'),
     assetModuleFilename: 'images/[hash][ext][query]',
