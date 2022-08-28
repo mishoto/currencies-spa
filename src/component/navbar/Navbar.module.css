@@ -1,0 +1,24 @@
+:root{
+  --navbarBackground: #fff;
+  --navbarBoxShadow: 2px 3px 3px 0px rgba(0, 0, 0, 0.5);
+  --navbarSmallWidth:85vw;
+  --navbarFullWidth: 1170px;
+  --searchLightShadow: 2px 5px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.navbar {
+  background: var(--navbarBackground);
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--navbarBoxShadow);
+}
+
+.nav_center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: var(--navbarSmallWidth);
+  margin: 0 auto;
+  max-width: var(--navbarFullWidth);
+}
