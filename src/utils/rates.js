@@ -3,7 +3,7 @@ const generateAllCurrencyPairs = (arr) => {
   let end = 1;
   let dist = 1;
   let currencyPairsAsStrings = [];
-  while (dist <= arr.length - 1 && end <= arr.length - 1) {  
+  while (dist <= arr.length - 1 && end <= arr.length - 1) {
     currencyPairsAsStrings.push(arr[start] + '-' + arr[end]);
     currencyPairsAsStrings.push(arr[end] + '-' + arr[start]);
     start++;
@@ -56,11 +56,11 @@ const generateCurrencyMapFromLS = (keys, values) => {
   for (let index = 0; index < keys.length; index++) {
     currenciesMap.set(keys[index], values[index]);
   }
- 
-return currenciesMap;
+
+  return currenciesMap;
 };
 
-const ratePairGenerator = (keys, values)=>{
+const ratePairGenerator = (keys, values) => {
   const currenciesMap = generateCurrencyMapFromLS(keys, values);
   const allKeyPairs = generateAllCurrencyPairs(keys);
 
@@ -69,25 +69,36 @@ const ratePairGenerator = (keys, values)=>{
     return [key, parseFloat(value)];
   });
   return resultArray;
-}
+};
 
 const filterAllPairsByCurrency = (arr, currency) => {
   return arr.filter((pair) => pair[0].includes(currency));
 };
 
-const filterSelectedWithDifference = (arr, difference)=>{
-  return arr.filter((pair)=>(Math.abs(pair[1] - difference).toFixed(4)) < difference);
-}
-
-const filterRemainingPairs = (arr, difference)=>{
-  return arr.filter((value)=>value[1] < difference);
-}
-
+const calculateMaxArrayLengthWithDiff = (arr, diff) => {
+  let counter = 0;
+  let maxCounter = 0;
+  for (let i = 0, j = 1; i < arr.length; j++) {
+    let tempDiff = Math.abs(arr[i][1] - arr[j][1]).toFixed(4);
+    if (tempDiff <= diff && tempDiff > 0) {
+      counter++;
+    }
+    if (j === arr.length - 1 || tempDiff > diff) {
+      j = i + 1;
+      if (i + 1 === arr.length - 1) {
+        break;
+      }
+      i++;
+      maxCounter = Math.max(maxCounter, counter);
+      counter = 0;
+    }
+  }
+  return maxCounter;
+};
 
 export {
-  filterSelectedWithDifference,
+  calculateMaxArrayLengthWithDiff,
   generateNewUrlTargetArray,
   filterAllPairsByCurrency,
   ratePairGenerator,
-  filterRemainingPairs
 };

@@ -3,8 +3,7 @@ import { useGlobalContext } from '../../context';
 import {
   ratePairGenerator,
   filterAllPairsByCurrency,
-  filterSelectedWithDifference,
-  filterRemainingPairs,
+  calculateMaxArrayLengthWithDiff,
 } from '../../utils/rates';
 
 import style from './SearchForm.module.css';
@@ -13,29 +12,34 @@ const SearchForm = () => {
   const { lsKeys, lsValues } = useGlobalContext();
   const [inputCurrency, setInputCurrency] = useState('');
   const [arrayLength, setArrayLength] = useState(0);
-  const [maxDifferenceArray, setMaxDifferenceArray] = useState([]);
+  const [filteredArray, setFilteredArray] = useState([]);
   const searchValue = useRef('');
 
   const resultArray = ratePairGenerator(lsKeys, lsValues);
-  const filteredArray = filterAllPairsByCurrency(resultArray, inputCurrency);
-
-  const arrayWithDifference = filterSelectedWithDifference(filteredArray, 0.5);
+  const filterByCurrencyArray = filterAllPairsByCurrency(
+    resultArray,
+    inputCurrency,
+  );
+  const array = calculateMaxArrayLengthWithDiff(
+    calculateMaxArrayLengthWithDiff,
+    0.5,
+  );
 
   const searchCurrency = () => {
     setInputCurrency(searchValue.current.value);
-    setArrayLength(arrayWithDifference.length);
-    setMaxDifferenceArray(arrayWithDifference);
+    setArrayLength(array.length);
+    setFilteredArray(filterByCurrencyArray);
     setTimeout(() => {
       setInputCurrency('');
       setArrayLength(0);
-      setMaxDifferenceArray([]);
+      setFilteredArray([]);
       searchValue.current.value = '';
-    }, 5000);
+    }, 10000);
   };
 
   useEffect(() => {
     searchValue.current.focus();
-  }, [searchValue.current]);
+  }, [inputCurrency]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,7 +75,7 @@ const SearchForm = () => {
         <div className={style.result_container}>
           {!searchValue.current.value
             ? ''
-            : maxDifferenceArray.map((pair, index) => {
+            : filteredArray.map((pair, index) => {
                 return (
                   <>
                     <div>
@@ -84,6 +88,7 @@ const SearchForm = () => {
                   </>
                 );
               })}
+          <h4>{filteredArray.length}</h4>
         </div>
       </article>
     </section>
