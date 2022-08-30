@@ -10,34 +10,32 @@ import {
 import style from './SearchForm.module.css';
 
 const SearchForm = () => {
-  const { lsKeys, lsValues, searchBase } = useGlobalContext();
-  const [currency, setCurrency] = useState(searchBase);
+  const { lsKeys, lsValues } = useGlobalContext();
+  const [inputCurrency, setInputCurrency] = useState('');
   const [arrayLength, setArrayLength] = useState(0);
   const [maxDifferenceArray, setMaxDifferenceArray] = useState([]);
   const searchValue = useRef('');
-  
 
   const resultArray = ratePairGenerator(lsKeys, lsValues);
-  const filteredArray = filterAllPairsByCurrency(resultArray, currency);
+  const filteredArray = filterAllPairsByCurrency(resultArray, inputCurrency);
 
   const arrayWithDifference = filterSelectedWithDifference(filteredArray, 0.5);
 
   const searchCurrency = () => {
-    setCurrency(searchValue.current.value);
+    setInputCurrency(searchValue.current.value);
     setArrayLength(arrayWithDifference.length);
     setMaxDifferenceArray(arrayWithDifference);
-    setTimeout(()=>{
-      setCurrency('');
+    setTimeout(() => {
+      setInputCurrency('');
       setArrayLength(0);
       setMaxDifferenceArray([]);
       searchValue.current.value = '';
-    },3000);
-    
+    }, 5000);
   };
 
   useEffect(() => {
     searchValue.current.focus();
-  }, [searchBase]);
+  }, [searchValue.current]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -58,8 +56,7 @@ const SearchForm = () => {
             ref={searchValue}
             onChange={() => searchCurrency()}
           />
-          <label 
-          className={style.form_control_label} htmlFor='name'>
+          <label className={style.form_control_label} htmlFor='name'>
             result: {arrayLength}
           </label>
         </div>
@@ -67,7 +64,7 @@ const SearchForm = () => {
       <article className={style.filter_result}>
         <div className={style.array_container}>
           <h4>
-            {currency} <span>{` max Math.abs() <= 0.5`}</span>{' '}
+            {searchValue.current.value} <span>{` max Math.abs() <= 0.5`}</span>
           </h4>
         </div>
 
