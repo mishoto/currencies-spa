@@ -38,7 +38,7 @@ const SearchForm = () => {
       setArrayLength(0);
       setFilteredArray([]);
       searchValue.current.value = '';
-    }, 5000);
+    }, 8000);
   };
 
   useEffect(() => {
