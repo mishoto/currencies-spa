@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useGlobalContext } from '../../context';
 import {
   ratePairGenerator,
@@ -12,20 +12,32 @@ import style from './SearchForm.module.css';
 const SearchForm = () => {
   const { lsKeys, lsValues, searchBase } = useGlobalContext();
   const [currency, setCurrency] = useState(searchBase);
-  
-  
+  const [arrayLength, setArrayLength] = useState(0);
+  const [maxDifferenceArray, setMaxDifferenceArray] = useState([]);
   const searchValue = useRef('');
+  
 
   const resultArray = ratePairGenerator(lsKeys, lsValues);
   const filteredArray = filterAllPairsByCurrency(resultArray, currency);
 
   const arrayWithDifference = filterSelectedWithDifference(filteredArray, 0.5);
-  
 
   const searchCurrency = () => {
     setCurrency(searchValue.current.value);
+    setArrayLength(arrayWithDifference.length);
+    setMaxDifferenceArray(arrayWithDifference);
+    setTimeout(()=>{
+      setCurrency('');
+      setArrayLength(0);
+      setMaxDifferenceArray([]);
+      searchValue.current.value = '';
+    },3000);
     
   };
+
+  useEffect(() => {
+    searchValue.current.focus();
+  }, [searchBase]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -46,8 +58,9 @@ const SearchForm = () => {
             ref={searchValue}
             onChange={() => searchCurrency()}
           />
-          <label className={style.form_control_label} htmlFor='name'>
-            result: {arrayWithDifference.length}
+          <label 
+          className={style.form_control_label} htmlFor='name'>
+            result: {arrayLength}
           </label>
         </div>
       </form>
@@ -61,7 +74,7 @@ const SearchForm = () => {
         <div className={style.result_container}>
           {!searchValue.current.value
             ? ''
-            : arrayWithDifference.map((pair, index) => {
+            : maxDifferenceArray.map((pair, index) => {
                 return (
                   <>
                     <div>
