@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useGlobalContext } from '../../context';
 import { ratePairGenerator } from '../../utils/rates';
 
@@ -8,6 +8,9 @@ const CurrenciesList = () => {
   const { lsKeys, lsValues } = useGlobalContext();
 
   const resultArray = ratePairGenerator(lsKeys, lsValues);
+
+  useEffect(()=>{
+},[{}])
 
   const filterMinRates = resultArray
     .filter((item) => item[1] < 1)
