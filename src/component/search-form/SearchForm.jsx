@@ -20,21 +20,25 @@ const SearchForm = () => {
     resultArray,
     inputCurrency,
   );
-  const array = calculateMaxArrayLengthWithDiff(
-    calculateMaxArrayLengthWithDiff,
+
+  const sortFilteredArray = filterByCurrencyArray.sort((a, b) => {
+    return a[1] - b[1];
+  });
+  const maxArrayLength = calculateMaxArrayLengthWithDiff(
+    sortFilteredArray,
     0.5,
   );
 
   const searchCurrency = () => {
     setInputCurrency(searchValue.current.value);
-    setArrayLength(array.length);
+    setArrayLength(maxArrayLength);
     setFilteredArray(filterByCurrencyArray);
     setTimeout(() => {
       setInputCurrency('');
       setArrayLength(0);
       setFilteredArray([]);
       searchValue.current.value = '';
-    }, 10000);
+    }, 5000);
   };
 
   useEffect(() => {
